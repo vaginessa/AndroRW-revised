@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="alepacheco.com.rw.MyService" />
+        <service android:name="alepacheco.com.rw.services.MyService" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package alepacheco.com.rw;
+package alepacheco.com.rw.apl;
 
 import android.content.Context;
 import android.graphics.Bitmap;

