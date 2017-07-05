@@ -79,7 +79,7 @@ public class Aes {
     private static byte[] decryptAes(byte[] raw, byte[] encrypted)
             throws Exception {
         SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
-        Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
+        Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, skeySpec);
         return cipher.doFinal(encrypted);
     }
