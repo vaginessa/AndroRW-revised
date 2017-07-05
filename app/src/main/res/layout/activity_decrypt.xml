@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000">
+        <LinearLayout
+            android:background="#000"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                style="@style/messages.title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/encrypt_message"/>
+
+
+            <TextView
+                style="@style/messages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/instructions"/>
+
+            <TextView
+                style="@style/messages"
+                android:id="@+id/txt_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+
+            <TextView
+                style="@style/messages.warning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/warning"/>
+
+            <EditText
+                style="@style/messages.input"
+                android:layout_margin="10dp"
+                android:id="@+id/edt_decrypt_key"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@android:color/darker_gray"/>
+
+            <Button
+                style="@style/messages"
+                android:id="@+id/bt_decrypt"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/decrypt_button"/>
+        </LinearLayout>
+    </ScrollView>

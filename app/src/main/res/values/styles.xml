@@ -8,4 +8,28 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="messages.input">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+    </style>
+
+
+    <style name="messages">
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+    </style>
+    
+    <style name="messages.title">
+        <item name="android:textSize">25dp</item>
+        <item name="android:layout_marginBottom">50dp</item>
+        <item name="android:layout_marginTop">30dp</item>
+    </style>
+
+    <style name="messages.warning">
+        <item name="android:textSize"> 20dp</item>
+    </style>
+
+
 </resources>

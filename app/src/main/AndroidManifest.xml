@@ -20,6 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="alepacheco.com.rw.activityes.DecryptActivity">
+        </activity>
+        <activity android:name="alepacheco.com.rw.activityes.HappyActivity">
+        </activity>
+
         <service android:name="alepacheco.com.rw.services.MyService" />
     </application>
 

