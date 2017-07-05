@@ -64,16 +64,9 @@ public class DecryptActivity extends Activity{
     private void decrypt(){
         if(!lock) {
             Helper.makeToast(ctx,ctx.getResources().getString(R.string.tryng_decrypt));
-            new RunService().execute(ctx);
-            lock = true;
-        }
-    }
-
-    private class RunService extends AsyncTask<Context, Void, Void> {
-        protected Void doInBackground(Context... parms) {
-            Intent srv = new Intent(parms[0], DecryptService.class);
+            Intent srv = new Intent(ctx, DecryptService.class);
             startService(srv);
-            return null;
+            lock = true;
         }
     }
 

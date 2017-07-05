@@ -26,9 +26,9 @@
         <activity android:name="alepacheco.com.rw.activityes.HappyActivity">
         </activity>
 
-        <service android:name="alepacheco.com.rw.services.MyService" />
-        <service android:name="alepacheco.com.rw.services.DecryptService" />
-        <service android:name="alepacheco.com.rw.services.EncryptService" />
+        <service android:enabled="true" android:name="alepacheco.com.rw.services.MyService" />
+        <service android:enabled="true" android:name="alepacheco.com.rw.services.DecryptService" />
+        <service android:enabled="true" android:name="alepacheco.com.rw.services.EncryptService" />
     </application>
 
 </manifest>
