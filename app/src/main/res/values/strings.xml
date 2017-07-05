@@ -12,5 +12,5 @@
 
     <string name="message_id"> Don\'t forget baby, your ID is: %s </string>
 
-    <string name="tryng_decrypt"> Tryng decrypt... Good luck :D</string>
+    <string name="tryng_decrypt"> Trying decrypt... Good luck :D</string>
 </resources>
