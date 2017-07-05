@@ -7,3 +7,5 @@
  - Background encryption in a service
  - Stream encryption
  - Blurs some images and adds text to them
+ - Data rescue
+ - Sending key to server
