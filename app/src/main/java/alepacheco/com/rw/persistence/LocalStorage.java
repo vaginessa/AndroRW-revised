@@ -18,6 +18,7 @@ public class LocalStorage {
     public static String TAG_KEY = "9eJedl";
     public static String TAG_TEMP_KEY = "Yuotpw23";
     public static String TAG_ENCRYPTED = "3UexaU";
+    public static String TAG_PAYD = "2Udf23";
 
     //Variaveis de controle
     private Context context;

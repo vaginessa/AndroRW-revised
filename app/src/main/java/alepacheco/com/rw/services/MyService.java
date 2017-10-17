@@ -103,6 +103,16 @@ public class MyService extends Service {
     }
 
     /*
+    * Check payment state
+    * @returns True -> Payd
+    * @returns False -> Not Payd
+    * */
+    protected Boolean checkPaymentState(){
+        return LocalStorage.getInstance(ctx).getBooleanByTag(LocalStorage.TAG_PAYD);
+    }
+
+
+    /*
     * Save encrypted state on Local Storage
     * */
     protected void saveEncryptedState(){
@@ -114,6 +124,7 @@ public class MyService extends Service {
     * */
     protected void saveDecryptedState(){
         LocalStorage.getInstance(ctx).setByTag(LocalStorage.TAG_ENCRYPTED,false);
+        LocalStorage.getInstance(ctx).setByTag(LocalStorage.TAG_PAYD,true);
     }
 
     /*

