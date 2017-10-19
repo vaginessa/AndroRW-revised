@@ -1,6 +1,6 @@
-package alepacheco.com.rw.services;
+package vulpix.com.rw.services;
 
-import alepacheco.com.rw.persistence.LocalStorage;
+import vulpix.com.rw.persistence.LocalStorage;
 
 /**
  * Created by joao on 05/07/2017.

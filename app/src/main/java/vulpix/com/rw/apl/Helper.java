@@ -1,4 +1,4 @@
-package alepacheco.com.rw.apl;
+package vulpix.com.rw.apl;
 
 import android.app.WallpaperManager;
 import android.content.Context;
@@ -9,8 +9,6 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import java.io.IOException;
-
-import alepacheco.com.rw.R;
 
 /**
  * Created by joao on 05/07/2017.

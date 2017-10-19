@@ -1,9 +1,9 @@
-package alepacheco.com.rw.activityes;
+package vulpix.com.rw.activityes;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-import alepacheco.com.rw.R;
+import vulpix.com.rw.R;
 
 /**
  * Created by joao on 05/07/2017.

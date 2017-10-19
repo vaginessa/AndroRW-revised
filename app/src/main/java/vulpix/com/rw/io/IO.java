@@ -1,4 +1,4 @@
-package alepacheco.com.rw.io;
+package vulpix.com.rw.io;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,7 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import alepacheco.com.rw.persistence.LocalStorage;
+import vulpix.com.rw.persistence.LocalStorage;
 
 /**
  * Created by joao on 28/06/2017.

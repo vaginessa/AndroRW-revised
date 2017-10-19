@@ -1,4 +1,4 @@
-package alepacheco.com.rw.persistence;
+package vulpix.com.rw.persistence;
 
 import android.content.Context;
 import android.content.SharedPreferences;

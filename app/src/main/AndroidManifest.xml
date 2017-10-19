@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="alepacheco.com.rw">
+    package="vulpix.com.rw">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="alepacheco.com.rw.MainActivity">
+        <activity android:name="vulpix.com.rw.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,14 +21,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="alepacheco.com.rw.activityes.DecryptActivity">
+        <activity android:name="vulpix.com.rw.activityes.DecryptActivity">
         </activity>
-        <activity android:name="alepacheco.com.rw.activityes.HappyActivity">
+        <activity android:name="vulpix.com.rw.activityes.HappyActivity">
         </activity>
 
-        <service android:enabled="true" android:name="alepacheco.com.rw.services.MyService" />
-        <service android:enabled="true" android:name="alepacheco.com.rw.services.DecryptService" />
-        <service android:enabled="true" android:name="alepacheco.com.rw.services.EncryptService" />
+        <service android:enabled="true" android:name="vulpix.com.rw.services.MyService" />
+        <service android:enabled="true" android:name="vulpix.com.rw.services.DecryptService" />
+        <service android:enabled="true" android:name="vulpix.com.rw.services.EncryptService" />
     </application>
 
 </manifest>

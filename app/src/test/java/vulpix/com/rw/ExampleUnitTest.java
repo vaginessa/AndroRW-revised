@@ -1,4 +1,4 @@
-package alepacheco.com.rw;
+package vulpix.com.rw;
 
 import org.junit.Test;
 
